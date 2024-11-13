@@ -35,6 +35,26 @@ def generateTree(dct):
         forest.append(t)
     return forest[0]
 
+def gen(root, st,dct):
+    if root.item != None:
+        dct[root.item] = st
+        return
+    gen(root.left, st + '0',dct)
+    gen(root.right, st + '1',dct)
+
+def generateDict(hT):
+    """
+    Generates a dictionary of Huffman codes for each character in the Huffman tree.
+
+    :param hT: HuffmanTree - The Huffman tree object containing the `head` node which is the root of the tree.
+    :return: dict - A dictionary where each character from the Huffman tree is a key, 
+                     and its Huffman code (binary representation) is the corresponding value (e.g., {'A': '0100101'}).
+    """
+
+    dct=dict()
+    gen(hT.head, '', dct)
+    return dct
+
 def generateWeightDict(filename, enc='utf-8'):
     """
     Builds a weight dictionary for each character in a text file.
