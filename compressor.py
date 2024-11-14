@@ -1,7 +1,7 @@
 import Huffman
 import pickle
 import time
-def compress(filename,enc='utf-8'):
+def compress(filename, enc='utf-8'):
     """
     Compresses a file using Huffman encoding and saves the compressed output to a new file with a `.comp` extension.
 
@@ -14,34 +14,36 @@ def compress(filename,enc='utf-8'):
     :param enc: str - The encoding of the source file (default is 'utf-8').
     :return: int - The size of the compressed file in bytes.
     """
-    t=Huffman.generateTree(Huffman.generateWeightDict(filename))
-    d=Huffman.generateDict(t)
-    st=time.time()
-    byteno=0
-    source=open(filename,'rt',encoding=enc)
-    des=open(filename+'.comp','wb')
-    pickle.dump(enc,des)
-    pickle.dump(t,des)
-    chunk=source.read(100)
-    b=''
+    t = Huffman.generateTree(Huffman.generateWeightDict(filename))
+    d = Huffman.generateDict(t)
+    st = time.time()
+    byteno = 0
+    source = open(filename,'rt', encoding=enc)
+    des = open(filename+'.comp', 'wb')
+    pickle.dump(enc, des)
+    pickle.dump(t, des)
+    chunk = source.read(100)
+    b = ''
     while chunk:
        for ch in chunk:
-           b+=d[ch]
-           if len(b)>=16:
-               des.write(bytes([int(b[0:8],base=2),int(b[8:16],base=2)]))
-               b=b[16:]
-               byteno+=2
-       chunk=source.read(100)
-    b+=d['end']
-    while len(b)>=8:
-        des.write(bytes([int(b[0:8],base=2)]))
-        b=b[8:]
-        byteno+=1
-    if len(b)>0:
-        des.write(bytes([int(b+'0'*(8-len(b)),base=2)]))
-        byteno+=1
+           b += d[ch]
+           if len(b) >= 16:
+               des.write(bytes([int(b[0:8], base=2), int(b[8:16], base=2)]))
+               b = b[16:]
+               byteno += 2
+       chunk = source.read(100)
+    b += d['end']
+    while len(b) >= 8:
+        des.write(bytes([int(b[0:8], base=2)]))
+        b = b[8:]
+        byteno += 1
+    if len(b) > 0:
+        des.write(bytes([int(b+'0'*(8-len(b)), base=2)]))
+        byteno += 1
     des.close()
     source.close()
-    print(time.time()-st)
+    print(time.time() - st)
     return byteno
-print(compress('testsholder', ))
+
+if __name__ == "__main__":
+    print(compress('testsholder', ))

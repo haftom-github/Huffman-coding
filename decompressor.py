@@ -1,6 +1,7 @@
 import pickle
 import time
 def decompress(filename):
+
     """
     Decompresses a file that was compressed using Huffman encoding and restores the original text file.
 
@@ -11,6 +12,7 @@ def decompress(filename):
     :param filename: str - The path to the compressed file.
     :return: int - The number of characters written to the decompressed file.
     """
+    
     st=time.time()
     source=open(filename,'rb')
     enc=pickle.load(source)
